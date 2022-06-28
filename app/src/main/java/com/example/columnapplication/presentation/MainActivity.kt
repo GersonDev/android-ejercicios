@@ -30,19 +30,19 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val nombre by menuViewModel.messageNombre.observeAsState("")
-            var apellido by remember { mutableStateOf("") }
-            var dni by remember { mutableStateOf("") }
-            var monto by remember { mutableStateOf("") }
+            val apellido by menuViewModel.messageApellido.observeAsState("")
+            val dni by menuViewModel.messageDni.observeAsState("")
+            val monto by menuViewModel.messageMonto.observeAsState("")
             val navController = rememberNavController()
             NavHost(navController, startDestination = "menuPrincipal") {
                 composable("menuPrincipal") {
-                    MenuPrincipal({
+                    MenuPrincipalPantalla({
                         navController.navigate("registroDeDatos")
-                    }, "")
+                    },{})
                 }
 
                 composable("registroDeDatos") {
-                    RegistroDeDatos(
+                    RegistroDeDatosPantalla(
                         onClickButtonRegistrar = {
                             menuViewModel.registerPerson()
                             menuViewModel.printStackAndQueue()
@@ -67,11 +67,11 @@ class MainActivity : ComponentActivity() {
                     )
                 }
 
-                composable("three") {
+               /* composable("three") {
                     Three {
                         navController.navigate("one")
                     }
-                }
+                }*/
             }
 
 
@@ -80,7 +80,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-private fun MenuPrincipal(onClickButtonOne: () -> Unit, text: String) {
+private fun MenuPrincipalPantalla(onClickButtonOne: () -> Unit,onClickButtonTwo:()->Unit) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
          Image(
             modifier = Modifier
@@ -90,23 +90,23 @@ private fun MenuPrincipal(onClickButtonOne: () -> Unit, text: String) {
             contentDescription = "Logo Linea1"
         )
         Button(onClick = onClickButtonOne, content = {
-            Text("Venta de Tarjetas $text")
+            Text("Venta de Tarjetas")
+        })
+        Button(onClick = onClickButtonTwo, content = {
+            Text("Ver estado de Cuentas ")
         })
         Button(onClick = {}, content = {
-            Text("Ver estado de Cuentas $text")
+            Text("Escaner tarjetas para ingresar al tren ")
         })
         Button(onClick = {}, content = {
-            Text("Escaner tarjetas para ingresar al tren $text")
-        })
-        Button(onClick = {}, content = {
-            Text("Recargar Tarjeta $text")
+            Text("Recargar Tarjeta ")
         })
     }
 
 }
 
 @Composable
-private fun RegistroDeDatos(
+private fun RegistroDeDatosPantalla(
     onClickButtonRegistrar: () -> Unit,
     nombre: String,
     apellido: String,
@@ -160,12 +160,13 @@ private fun RegistroDeDatos(
     }
 }
 
-fun registrarDatos(nombre: String, apellido: String, dni: String, monto: String) {
+@Composable
+private fun VerEstadoDeCuentaPantalla(){
 
 }
 
 @Composable
-private fun Three(onClickButtonThree: () -> Unit) {
+private fun VerEstadoDeCuenta(onClickButtonThree: () -> Unit) {
     Button(onClick = onClickButtonThree, content = {
         Text("Carloss Threee", color = Color.Red)
     })
@@ -174,14 +175,26 @@ private fun Three(onClickButtonThree: () -> Unit) {
 @Preview
 @Composable
 fun MenuPrincipalPreview() {
-    MenuPrincipal(onClickButtonOne = { /*TODO*/ }, text = "")
+    MenuPrincipalPantalla(onClickButtonOne = { /*TODO*/ }, onClickButtonTwo = {})
 }
 
 @Preview
 @Composable
 fun RegistarPreview() {
-    //RegistroDeDatos {}
+    RegistroDeDatosPantalla(
+        onClickButtonRegistrar = { /*TODO*/ },
+        nombre ="" ,
+        apellido = "",
+        dni = "",
+        monto = "",
+        onValueChangeNombre = {},
+        onValueChangeApellido ={} ,
+        onValueChangeDni = {},
+        onValueChangeMonto = {}
+    )
 }
+
+
 /*
 @Preview
 @Composable
