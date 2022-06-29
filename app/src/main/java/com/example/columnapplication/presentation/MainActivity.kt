@@ -36,22 +36,22 @@ class MainActivity : ComponentActivity() {
             val monto by menuViewModel.messageMonto.observeAsState("")
             val listaDeTarjetas by menuViewModel.listaDeRegistro.observeAsState(listOf())
             val navController = rememberNavController()
-            NavHost(navController, startDestination = "menuPrincipalPantalla") {
-                composable("menuPrincipalPantalla") {
+            NavHost(navController, startDestination = Screen.MenuPrincipal.route) {
+                composable(Screen.MenuPrincipal.route) {
                     MenuPrincipalPantalla({
-                        navController.navigate("registroDeDatosPantalla")
+                        navController.navigate(Screen.Registrar.route)
                     },
                         {
-                            navController.navigate("verEstadoDeCuentaPantalla")
+                            navController.navigate(Screen.EstadoDeCuenta.route)
                         }
                     )
                 }
 
-                composable("registroDeDatosPantalla") {
+                composable(Screen.Registrar.route) {
                     RegistroDeDatosPantalla(
                         onClickButtonRegistrar = {
                             menuViewModel.registerPerson()
-                            navController.navigate("menuPrincipalPantalla")
+                            navController.navigate(Screen.MenuPrincipal.route)
                         },
                         nombre = nombre,
                         apellido = apellido,
@@ -72,7 +72,7 @@ class MainActivity : ComponentActivity() {
                     )
                 }
 
-                 composable("verEstadoDeCuentaPantalla") {
+                 composable(Screen.EstadoDeCuenta.route) {
                       VerEstadoDeCuentaPantalla(tarjetas = listaDeTarjetas)
                  }
             }
