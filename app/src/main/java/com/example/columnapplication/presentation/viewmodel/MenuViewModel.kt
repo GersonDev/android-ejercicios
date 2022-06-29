@@ -84,7 +84,7 @@ class MenuViewModel : ViewModel() {
         }
     }
 
-    fun printStackAndQueue() {
+    fun actualizarTarjetas() {
         val tarjetas=cardsReporitory.obtenerTarjetas()
         _listaDeRegistro.value=tarjetas
     }

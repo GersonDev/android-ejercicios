@@ -38,10 +38,12 @@ class MainActivity : ComponentActivity() {
             val navController = rememberNavController()
             NavHost(navController, startDestination = Screen.MenuPrincipal.route) {
                 composable(Screen.MenuPrincipal.route) {
-                    MenuPrincipalPantalla({
-                        navController.navigate(Screen.Registrar.route)
-                    },
+                    MenuPrincipalPantalla(
                         {
+                            navController.navigate(Screen.Registrar.route)
+                        },
+                        {
+                            menuViewModel.actualizarTarjetas()
                             navController.navigate(Screen.EstadoDeCuenta.route)
                         }
                     )
@@ -72,9 +74,9 @@ class MainActivity : ComponentActivity() {
                     )
                 }
 
-                 composable(Screen.EstadoDeCuenta.route) {
-                      VerEstadoDeCuentaPantalla(tarjetas = listaDeTarjetas)
-                 }
+                composable(Screen.EstadoDeCuenta.route) {
+                    VerEstadoDeCuentaPantalla(tarjetas = listaDeTarjetas)
+                }
             }
         }
     }
@@ -192,14 +194,17 @@ fun RegistarPreview() {
         onValueChangeMonto = {}
     )
 }
+
 @Preview
 @Composable
-fun EstadoDeCuenta(){
-    VerEstadoDeCuentaPantalla(tarjetas = listOf(
-        Card("A001",20.00),
-        Card("A002",20.50)
+fun EstadoDeCuenta() {
+    VerEstadoDeCuentaPantalla(
+        tarjetas = listOf(
+            Card("A001", 20.00),
+            Card("A002", 20.50)
 
-    ))
+        )
+    )
 }
 
 /*
