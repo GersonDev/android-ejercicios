@@ -15,6 +15,9 @@ class Stack<T> {
     }
 
     fun peek(): T? = elements.lastOrNull()
+    fun obtenerElementos(): List<T> {
+        return elements
+    }
 
     override fun toString(): String = elements.toString()
 }

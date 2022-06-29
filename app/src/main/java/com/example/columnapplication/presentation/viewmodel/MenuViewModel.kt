@@ -3,6 +3,7 @@ package com.example.columnapplication.presentation.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.columnapplication.domain.models.Card
 import com.example.columnapplication.domain.models.Person
 import com.example.columnapplication.domain.repositories.CardsReporitory
 import com.example.columnapplication.domain.repositories.PersonsRepository
@@ -17,7 +18,8 @@ class MenuViewModel : ViewModel() {
     val messageDni: LiveData<String> = _messageDni
     private val _messageMonto = MutableLiveData("")
     val messageMonto: LiveData<String> = _messageMonto
-
+    private val _listaDeRegistro=MutableLiveData<List<Card>>()
+    val  listaDeRegistro:LiveData<List<Card>> = _listaDeRegistro
 
     private val cardsReporitory = CardsReporitory()
     private val personsRepository = PersonsRepository()
@@ -83,8 +85,8 @@ class MenuViewModel : ViewModel() {
     }
 
     fun printStackAndQueue() {
-        cardsReporitory.printCard()
-        personsRepository.printQueue()
+        val tarjetas=cardsReporitory.obtenerTarjetas()
+        _listaDeRegistro.value=tarjetas
     }
 
     fun passCard() {

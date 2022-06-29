@@ -23,7 +23,7 @@ class CardsReporitory {
         return cards.pop()
     }
 
-    fun printCard() {
-        println(cards.toString())
+    fun obtenerTarjetas(): List<Card> {
+        return cards.obtenerElementos()
     }
 }

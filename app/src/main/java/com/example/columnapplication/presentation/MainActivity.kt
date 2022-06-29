@@ -21,6 +21,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.columnapplication.R
+import com.example.columnapplication.domain.models.Card
 import com.example.columnapplication.presentation.viewmodel.MenuViewModel
 
 class MainActivity : ComponentActivity() {
@@ -33,20 +34,24 @@ class MainActivity : ComponentActivity() {
             val apellido by menuViewModel.messageApellido.observeAsState("")
             val dni by menuViewModel.messageDni.observeAsState("")
             val monto by menuViewModel.messageMonto.observeAsState("")
+            val listaDeTarjetas by menuViewModel.listaDeRegistro.observeAsState(listOf())
             val navController = rememberNavController()
-            NavHost(navController, startDestination = "menuPrincipal") {
-                composable("menuPrincipal") {
+            NavHost(navController, startDestination = "menuPrincipalPantalla") {
+                composable("menuPrincipalPantalla") {
                     MenuPrincipalPantalla({
-                        navController.navigate("registroDeDatos")
-                    },{})
+                        navController.navigate("registroDeDatosPantalla")
+                    },
+                        {
+                            navController.navigate("verEstadoDeCuentaPantalla")
+                        }
+                    )
                 }
 
-                composable("registroDeDatos") {
+                composable("registroDeDatosPantalla") {
                     RegistroDeDatosPantalla(
                         onClickButtonRegistrar = {
                             menuViewModel.registerPerson()
-                            menuViewModel.printStackAndQueue()
-                            navController.navigate("menuPrincipal")
+                            navController.navigate("menuPrincipalPantalla")
                         },
                         nombre = nombre,
                         apellido = apellido,
@@ -67,22 +72,18 @@ class MainActivity : ComponentActivity() {
                     )
                 }
 
-               /* composable("three") {
-                    Three {
-                        navController.navigate("one")
-                    }
-                }*/
+                 composable("verEstadoDeCuentaPantalla") {
+                      VerEstadoDeCuentaPantalla(tarjetas = listaDeTarjetas)
+                 }
             }
-
-
         }
     }
 }
 
 @Composable
-private fun MenuPrincipalPantalla(onClickButtonOne: () -> Unit,onClickButtonTwo:()->Unit) {
+private fun MenuPrincipalPantalla(onClickButtonOne: () -> Unit, onClickButtonTwo: () -> Unit) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-         Image(
+        Image(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(200.dp),
@@ -125,7 +126,7 @@ private fun RegistroDeDatosPantalla(
             value = nombre,
             onValueChange = onValueChangeNombre,
             label = {
-                Text( "Ingrese Nombre:")
+                Text("Ingrese Nombre:")
             }
         )
         TextField(
@@ -161,15 +162,13 @@ private fun RegistroDeDatosPantalla(
 }
 
 @Composable
-private fun VerEstadoDeCuentaPantalla(){
+private fun VerEstadoDeCuentaPantalla(tarjetas: List<Card>) {
+    Column {
+        tarjetas.forEach { tarjeta ->
+            Text("${tarjeta.code} - ${tarjeta.balance}", color = Color.Red)
 
-}
-
-@Composable
-private fun VerEstadoDeCuenta(onClickButtonThree: () -> Unit) {
-    Button(onClick = onClickButtonThree, content = {
-        Text("Carloss Threee", color = Color.Red)
-    })
+        }
+    }
 }
 
 @Preview
@@ -183,17 +182,25 @@ fun MenuPrincipalPreview() {
 fun RegistarPreview() {
     RegistroDeDatosPantalla(
         onClickButtonRegistrar = { /*TODO*/ },
-        nombre ="" ,
+        nombre = "",
         apellido = "",
         dni = "",
         monto = "",
         onValueChangeNombre = {},
-        onValueChangeApellido ={} ,
+        onValueChangeApellido = {},
         onValueChangeDni = {},
         onValueChangeMonto = {}
     )
 }
+@Preview
+@Composable
+fun EstadoDeCuenta(){
+    VerEstadoDeCuentaPantalla(tarjetas = listOf(
+        Card("A001",20.00),
+        Card("A002",20.50)
 
+    ))
+}
 
 /*
 @Preview
